@@ -9,13 +9,13 @@ router.get('/:groceryStoreName', (req, res) => {
     var storeName = req.params.groceryStoreName;
     Product.find({groceryStore: storeName}).exec((err, result) => {
         if (err) {
-            res.send({
+            return res.send({
                 success: false,
                 message: 'فروشگاهی با این نام پیدا نشد'
             })
         }
         else {
-            res.send({
+            return res.send({
                 success: true,
                 information: result,
                 message: "کالاهای فروشگاه:"
@@ -42,10 +42,13 @@ router.post('/add', upload.single('image'), (req, res) => {
 
     Product.create(newProduct, (err, addedInfo) => {
         if (err) {
-            console.log(err)
+            return res.send({
+                success : false,
+                message : "خطا در ذخیره سازی"
+            })
         }
         else {
-            res.send({
+            return res.send({
                 success: true,
                 message: "اطلاعات کالای موردنظر با موفقیت ثبت شد.",
                 information: addedInfo
@@ -63,7 +66,7 @@ router.post('/remove', (req, res) => {
                 message : "کالا ی نامعتبر"
             });
         }
-        res.send({
+        return res.send({
             success : true,
             message : "کالا با موفقیت حذف گردید",
             info : product
@@ -76,7 +79,7 @@ router.post('/refill', (req, res) => {
     var amount = req.body.amount;
     Product.findOne({ _id: productId }, (err, product) => {
         if(err || !product){
-            res.send({
+            return res.send({
                 success : false,
                 message : "کالا ی نامعتبر"
             });
@@ -89,7 +92,7 @@ router.post('/refill', (req, res) => {
                   message : "خطا در ذخیره سازی"
               });
             }
-            res.send({
+            return res.send({
                 success : true,
                 message : "عملیات موفق",
                 info : product
@@ -103,7 +106,7 @@ router.post('/changeDiscount', (req, res) => {
     var discount = req.body.discount;
     Product.findOne({ _id: productId }, (err, product) => {
         if(err || !product){
-            res.send({
+            return res.send({
                 success : false,
                 message : "کالا ی نامعتبر"
             });
@@ -116,7 +119,7 @@ router.post('/changeDiscount', (req, res) => {
                   message : "خطا در ذخیره سازی"
               });
             }
-            res.send({
+            return res.send({
                 success : true,
                 message : "عملیات موفق",
                 info : product

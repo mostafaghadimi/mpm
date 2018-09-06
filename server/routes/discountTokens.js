@@ -31,7 +31,7 @@ router.post('/generate', (req, res, next) => {
             if(error){
                 return res.status(500).send({ msg: err.message });
             }
-            res.json(token);
+            return res.json(token);
         });
     });
 });
@@ -41,12 +41,12 @@ router.post('/validateToken/',(req,res) => {
     var userId = req.body.userId;
     DiscountToken.findOne({token : token} , function(err, token){
         if(err || !token || token.userId != userId){
-            res.send({
+            return res.send({
                 success : false,
                 message : "کدتخفیف نامعتبر",
             });
         }
-        res.send({
+        return res.send({
             success : true,
             message : "کدتخفیف معتبر",
             info : token.discount
