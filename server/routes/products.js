@@ -3,6 +3,7 @@ var router = express.Router();
 
 var multer = require('multer');
 var upload = multer({dest: '../assets/uploads/productPicture'});
+var Product = require('./model/product');
 
 router.get('/:groceryStoreName', (req, res) => {
     var storeName = req.params.groceryStoreName;
@@ -54,15 +55,74 @@ router.post('/add', upload.single('image'), (req, res) => {
 });
 
 router.post('/remove', (req, res) => {
-
+    var productId = req.body.id;
+    Product.findByIdAndRemove(productId,(err,product) => {
+        if(err || !product){
+            res.send({
+                success : false,
+                message : "کالا ی نامعتبر"
+            });
+        }
+        res.send({
+            success : true,
+            message : "کالا با موفقیت حذف گردید",
+            info : product
+        });
+    });
 });
 
 router.post('/refill', (req, res) => {
-
+    var productId = req.body.id;
+    var amount = req.body.amount;
+    Product.findOne({ _id: productId }, (err, product) => {
+        if(err || !product){
+            res.send({
+                success : false,
+                message : "کالا ی نامعتبر"
+            });
+        }
+        product.count += amount;
+        product.save(function (err) {
+            if (err) {
+              return res.send({
+                  success : false,
+                  message : "خطا در ذخیره سازی"
+              });
+            }
+            res.send({
+                success : true,
+                message : "عملیات موفق",
+                info : product
+            });
+          });
+    });
 });
 
 router.post('/changeDiscount', (req, res) => {
-
+    var productId = req.body.id;
+    var discount = req.body.discount;
+    Product.findOne({ _id: productId }, (err, product) => {
+        if(err || !product){
+            res.send({
+                success : false,
+                message : "کالا ی نامعتبر"
+            });
+        }
+        product.discount = discount;
+        product.save(function (err) {
+            if (err) {
+              return res.send({
+                  success : false,
+                  message : "خطا در ذخیره سازی"
+              });
+            }
+            res.send({
+                success : true,
+                message : "عملیات موفق",
+                info : product
+            });
+          });
+    });
 });
 
 module.exports = router;
