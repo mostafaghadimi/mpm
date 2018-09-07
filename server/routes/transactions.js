@@ -144,6 +144,7 @@ router.post('/history', (req, res) => {
         owner: userID
     }, (err, transactions) => {
         if (err) {
+            console.log(err)
             return res.send({
                 success: false,
                 message: "مشکل در ارتباط"

@@ -16,19 +16,18 @@ router.post('/registration', (req, res, next) => {
 
     User.create(userData, function (error, user) {
         if (error) { //when Email is already exists come here, Because in mongoose Model we defined email uniqueness equals to true
-            res.send({
+            return res.send({
                 success: false,
                 message: error
             });
-            return next(error);
         } else {
             req.session.userId = user._id;
             user.password = ''
-            res.send({
+            console.log(user);
+            return res.send({
                 success: true,
                 info: user
             });
-            console.log(user);
         }
     });
 });
@@ -39,34 +38,28 @@ router.post('/login', (req, res, next) => {
         User.authenticate(req.body.email, req.body.password, function (error, user) {
             if (error) {
                 console.log(error);
-                res.send({
+                return res.send({
                     success: false,
                     message: error
                 });
-                return next(error);
             }
             if (!user) {
                 var err = new Error('Wrong password.');
                 err.status = 401;
-                res.send({
+                return res.send({
                     success: false,
                     info: err
                 });
-                return next(err);
             }
             console.log(user);
             req.session.userId = user._id;
             req.session.loggedIn = true;
             user.password = ''
-            res.send({
+            return res.send({
                 success: true,
                 info: user
             });
         });
-    } else {
-        var err = new Error('All fields required.');
-        err.status = 400;
-        return next(err);
     }
 });
 

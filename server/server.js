@@ -30,6 +30,10 @@ app.use(bodyParser.urlencoded({
   extended: false
 }));
 
+app.use('*',(req,res,next) => {
+    console.log(req.body);
+    next();
+});
 var products = require('./routes/products');
 app.use('/products', products);
 
