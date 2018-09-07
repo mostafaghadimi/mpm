@@ -7,7 +7,7 @@ var DiscountToken = require('./../model/discountToken');
 
 router.post('/generate', (req, res, next) => {
     var discount = req.body.discount;
-    var userId = req.body.userId;
+    var userId = req.body.userID;
     var discount = req.body.discount;
 
     User.findOne({
@@ -37,7 +37,7 @@ router.post('/generate', (req, res, next) => {
 
 router.post('/validateToken/',(req,res) => {
     var token = req.body.token;
-    var userId = req.body.userId;
+    var userId = req.body.userID;
     DiscountToken.findOne({token : token} , function(err, token){
         if(err || !token || token.userId != userId){
             return res.send({
