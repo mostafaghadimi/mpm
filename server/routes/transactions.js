@@ -31,13 +31,20 @@ router.post('/validation', (req, res) => {
 
 });
 
-router.get('/payment/ipg', (req, res) => {
+router.post('/payment/ipg', (req, res) => {
     var finalPrice = req.body.finalPrice;
     var cart = req.body.cart;
     var userID = req.body.userID;
     var tokenDiscount = req.body.tokenDiscount;
     var date = req.body.date;
-    res.render('ipg', {finalPrice : finalPrice,cart : cart,userID : userID,tokenDiscount,tokenDiscount, date : date});
+    res.render('ipg', {
+        finalPrice: finalPrice,
+        cart: cart,
+        userID: userID,
+        tokenDiscount,
+        tokenDiscount,
+        date: date
+    });
 });
 
 router.post('/payment/wallet', (req, res) => {
@@ -52,10 +59,10 @@ router.post('/payment/wallet', (req, res) => {
                 message: 'کاربر نامعتبر است'
             })
         } else {
-            if(user.credit < finalPrice){
+            if (user.credit < finalPrice) {
                 return res.send({
-                    success : false,
-                    message :"موجودی کمتر از مبلغ است"
+                    success: false,
+                    message: "موجودی کمتر از مبلغ است"
                 })
             }
             user.credit -= finalPrice;
@@ -67,9 +74,9 @@ router.post('/payment/wallet', (req, res) => {
                     })
                 }
                 return res.send({
-                    success : true,
-                    message : "پرداخت با موفقیت",
-                    info : user
+                    success: true,
+                    message: "پرداخت با موفقیت",
+                    info: user
                 })
             })
         }
@@ -80,15 +87,17 @@ router.post('/payment/wallet', (req, res) => {
 
 router.post('/payment/done', (req, res) => {
     // TODO: push notification
-    var date = req.body.date;
-    console.log('server : done');
-    for (var i = 0; i < req.body.cart.length; i++) {
-        var count = req.body.cart[i].count;
+    console.log(req.body);
+    var cart = req.body.cart;
+    console.log('sdls');
+    console.log(cart);
+    for (var i = 0; i < cart.length; i++) {
+        var count = cart[i].count;
         Product.findOne({
-            _id: req.body.cart[i]._id
+            _id: cart[i]._id
         }).exec((err, result) => {
             if (err || !result) {
-                res.send({
+                return res.send({
                     success: false,
                     message: ' کالا نامعتبر است'
                 });
@@ -96,7 +105,7 @@ router.post('/payment/done', (req, res) => {
             result.count -= count;
             result.save((err) => {
                 if (err) {
-                    res.send({
+                    return res.send({
                         success: false,
                         message: "خطا در ذخیره‌سازی"
                     });
@@ -104,49 +113,49 @@ router.post('/payment/done', (req, res) => {
             })
         })
     }
-
     var newTransaction = {
         owner: req.body.userID,
-        cart: req.body.cart,
-        date : date,
-        tokenDiscount: number(req.body.tokenDiscount)
+        cart: cart,
+        date: req.body.date,
+        tokenDiscount: Number(req.body.tokenDiscount)
     }
+    console.log(newTransaction);
 
     Transaction.create(newTransaction, (err, result) => {
         if (err) {
-            res.send({
+            console.log('errrrr : ', err);
+            return res.send({
                 message: 'خطا: تراکنش ثبت نشد',
                 success: false,
             });
-        } else {
-            res.send({
-                message: 'تراکنش با موفقیت ثبت شد',
-                success: true
-            });
         }
-    });
+        return res.send({
+            message: 'تراکنش با موفقیت ثبت شد',
+            success: true
+        });
 
-    res.send({
-        message: 'خرید با موفقیت انجام شد',
-        success: true
     });
 
 });
 
-router.post('/history',(req,res) => {
+router.post('/history', (req, res) => {
     var userID = req.body.userID;
-    Transaction.find({owner : userID},(err,transactions) => {
-        if(err){
+    Transaction.find({
+        owner: userID
+    }, (err, transactions) => {
+        if (err) {
             return res.send({
-                success :false,
-                message : "مشکل در ارتباط"
+                success: false,
+                message: "مشکل در ارتباط"
             })
         }
-        transactions = transactions.sort({"createdAt": -1});
+        transactions = transactions.sort({
+            "createdAt": -1
+        });
         return res.send({
-            success : true,
-            message : "پیدا شد",
-            info : transactions
+            success: true,
+            message: "پیدا شد",
+            info: transactions
         })
     });
 })
