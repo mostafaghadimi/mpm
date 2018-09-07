@@ -27,12 +27,18 @@ app.use(bodyParser.urlencoded({
 }));
 
 var products = require('./routes/products');
-app.use('/product', products);
+app.use('/products', products);
 
 var users = require('./routes/users');
-app.use('/user', users);
+app.use('/users', users);
 
 var transaction = require('./routes/transactions');
-app.use('/transaction', transaction);
+app.use('/transactions', transaction);
+
+var discountToken = require('./routes/discountTokens');
+app.use('/discount', discountToken);
+
+var store = require('./routes/stores');
+app.use('/stores',store);
 
 app.listen(8080, console.log('server connected: 8080'))

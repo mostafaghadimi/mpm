@@ -8,11 +8,11 @@ var productSchema = new Schema({
         trim: true
     },
     productionDate: {
-        type: Date,
+        type: String,
         required: true
     },
     expirationDate: {
-        type: Date,
+        type: String,
         required: true
     },
     price: {

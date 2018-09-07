@@ -10,7 +10,6 @@ router.post('/registration', (req, res, next) => {
     var hash = bcrypt.hashSync(req.body.password, 10);
     var userData = {
         name: req.body.name,
-        username: req.body.username,
         email: req.body.email,
         password: hash
     }

@@ -31,7 +31,7 @@ router.post('/validation', (req, res) => {
 
 });
 
-router.post('/payment', (req, res) => {
+router.post('/payment/wallet', (req, res) => {
     var finalPrice = req.body.finalPrice;
     var userID = req.body.userID;
     User.findOne({
@@ -43,10 +43,16 @@ router.post('/payment', (req, res) => {
                 message: 'کاربر نامعتبر است'
             })
         } else {
+            if(user.credit < finalPrice){
+                return res.send({
+                    success : false,
+                    message :"موجودی کمتر از مبلغ است"
+                })
+            }
             user.credit -= finalPrice;
             user.save((err) => {
                 if (err) {
-                    res.send({
+                    return res.send({
                         success: false,
                         message: 'خطا در به‌روز رسانی موجودی'
                     })

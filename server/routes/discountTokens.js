@@ -2,8 +2,8 @@ var express = require('express');
 var router = express.Router();
 
 var crypto = require('crypto');
-var User = require('./model/user');
-var DiscountToken = require('./model/discountToken');
+var User = require('./../model/user');
+var DiscountToken = require('./../model/discountToken');
 
 router.post('/generate', (req, res, next) => {
     var discount = req.body.discount;
@@ -53,3 +53,5 @@ router.post('/validateToken/',(req,res) => {
         })
     });
 });
+
+module.exports = router;

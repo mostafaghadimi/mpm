@@ -7,11 +7,11 @@ var storeSchema = new Schema({
         required: true
     },
     location: {
-        latitude: {
+        lat: {
             type: Number,
             required: true
         },
-        longtitude: {
+        lon: {
             type: Number,
             required: true
         }
@@ -21,3 +21,6 @@ var storeSchema = new Schema({
         required: true
     }
 })
+
+var Store = mongoose.model('Store', storeSchema);
+module.exports = Store;
