@@ -17,9 +17,9 @@ var discountTokenSchema = new Schema({
         default: Date.now,
         expires: 86400
     },
-    discount :{
-        type : Number,
-        required : true
+    discount: {
+        type: Number,
+        required: true
     }
 });
 

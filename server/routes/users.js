@@ -67,7 +67,9 @@ router.post('/charge', (req, res) => {
     var credit = req.body.credit;
     var userID = req.body.userID;
 
-    User.find({_id: userID}, (err, user) => {
+    User.find({
+        _id: userID
+    }, (err, user) => {
         if (err || !user) {
             return res.send({
                 success: false,

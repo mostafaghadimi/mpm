@@ -2,9 +2,9 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var QGiftSchema = new Schema({
-    credit : {
-        type : Number,
-        required : true
+    credit: {
+        type: Number,
+        required: true
     }
 });
 
