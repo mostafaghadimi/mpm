@@ -71,5 +71,33 @@ router.post('/login', (req, res, next) => {
     }
 });
 
+router.post('/charge', (req, res) => {
+    var credit = req.body.credit;
+    var userID = req.body.userID;
+
+    User.find({_id: userID}, (err, user) => {
+        if (err || !user) {
+            return res.send({
+                success: false,
+                message: 'کاربر نامعتبر'
+            })
+        }
+        user.credit += credit;
+        user.save(err => {
+            if (err) {
+                return res.send({
+                    success: false,
+                    message: 'خطای ذخیره‌سازی'
+                })
+            }
+            return res.send({
+                success: true,
+                message: "موجودی با موفقیت افزایش یافت",
+                information: user
+            })
+        })
+    })
+})
+
 
 module.exports = router;

@@ -13,6 +13,7 @@ var transactionSchema = new Schema ({
     },
     createdAt: {
         type: Date,
+        default: Date.now()
         // set moment.now for default
     }, 
     tokenDiscount: {
