@@ -14,8 +14,10 @@ var transactionSchema = new Schema ({
     createdAt: {
         type: Date,
         default: Date.now()
-        // set moment.now for default
     }, 
+    date : {
+        type : String
+    },
     tokenDiscount: {
         type: Number,
         default: 0

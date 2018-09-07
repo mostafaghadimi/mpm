@@ -15,6 +15,7 @@ db.once('open', function () {
 });
 
 var morgan = require('morgan');
+var ejs = require('ejs')
 
 var session = require('express-session');
 app.use(session({
@@ -47,8 +48,9 @@ app.use('/stores',store);
 app.use('/public', express.static(path.join(__dirname, '../public')));
 app.use('/pay', express.static(path.join(__dirname, '../public/html/pay/')))
 
-app.get('/payment', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/html/ipg.html'))
-})
+
+app.set('views',path.join(__dirname, '../public/html/'));
+app.engine('html', require('ejs').renderFile);
+app.set('view engine', 'html');
 
 app.listen(8080, console.log('server connected: 8080'))

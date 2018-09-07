@@ -19,6 +19,12 @@ var storeSchema = new Schema({
     deviceToken: {
         type: String,
         required: true
+    },
+    address : {
+        type : String,
+    },
+    picture : {
+        type : String
     }
 })
 

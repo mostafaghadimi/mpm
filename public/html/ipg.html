@@ -23,14 +23,43 @@
     <link rel="stylesheet" href="/pay/pay.css">
     <link rel="stylesheet" href="/pay/receipt.css">
     <link href="/pay/jquery.keypad.css" rel="stylesheet">
-    <!--[if lt IE 9]>
-    <link rel="stylesheet" href="/Tpayment/Content/Layouts/irankish.fa-IR/css/pay-IE8-hack.css"/>
-    <![endif]-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 
 
 
 <body>
+    <script>
+        var cart = ['a','a'];//<%= cart %>;
+        var userId = "snjdknsjdkc";//<%= userID %>;
+        var tokenDiscount = 28273;//<%= tokenDiscount %>;
+        function transactionDone(){
+            console.log('client : done');
+            var data = {
+                cart : cart,
+                userID : userId,
+                tokenDiscount : tokenDiscount
+            }
+            $.post("./done",function(data,status){
+                alert(status);
+            });
+        }
+        $("#cancel").click(function(){
+            console.log('client : done');
+            var data = {
+                cart : cart,
+                userID : userId,
+                tokenDiscount : tokenDiscount
+            }
+            $.post("./done",function(data,status){
+                alert(status);
+            });
+        });
+        $("#paymentBtn").click(function(){
+            console.log("ncjdksndcj");
+            transactionDone();
+        });
+    </script>
 
     <div class="modal fade" id="RModalCancel" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" ata-backdrop="static" data-keyboard="false">
         <div class="modal-dialog modal-sm">
@@ -48,11 +77,14 @@
 
                     </div>
                 </div>
+                <p id="userCart" hidden><%= cart %></p>
+                <p id="userID" hidden><%= userID %></p>
+                <p id="tokenDiscount" hidden><%= tokenDiscount %></p>
 
                 <div class="modal-footer">
                     <div class="row">
                         <div class="col-xs-6">
-                            <input type="button" id="yes" name="removeRuleConfirm" value="بلی" class="btn btn-success btn-block m-b-xs-0 " data-ng-click="removeRuleConfirm();">
+                            <input type="button" id="yes" name="removeRuleConfirm" value="بلی" class="btn btn-success btn-block m-b-xs-0 " data-ng-click="removeRuleConfirm();" >
                         </div>
                         <div class="col-xs-6">
                             <input type="button" id="no" name="removeRuleCancle" value="خیر" class="btn btn-danger btn-block m-b-xs-0 " data-ng-click="removeRuleCancle();">
@@ -126,7 +158,7 @@
 
                                         <p>
                                             <span class="glyphicon glyphicon-stop" aria-hidden="true"></span>
-                                            پذیرنده : دانشگاه صنعتي شريف-اتوماسيون تغذيه
+                                            پذیرنده : سامانه کیو پی QPay
                                         </p>
                                         <p>
                                             <span class="glyphicon glyphicon-stop" aria-hidden="true"></span>
@@ -138,7 +170,9 @@
                                         </p>
                                         <p>
                                             <span class="glyphicon glyphicon-stop" aria-hidden="true"></span>  مبلغ قابل پرداخت :
-                                            <span style="font-weight: 800; margin: 0 5px; color: #0F4DBC;">50,000</span>
+                                            <span style="font-weight: 800; margin: 0 5px; color: #0F4DBC;">
+                                                <%= finalPrice %>
+                                            </span>
                                             ریال
                                         </p>
                                     </div>
@@ -146,15 +180,7 @@
 
                                 <div class="row foot-1">
                                     <div class="col-md-12 pay-info-004">
-                                        <p>دانشگاه صنعتي شريف-اتوماسيون تغذيه</p>
-                                        <!-- <a target="_blank" href=http://www.dining.sharif.edu> -->
-
-                                        <p>
-                                            <span class=" glyphicon glyphicon-paperclip" aria-hidden="true" style="font-size: 17px; top: 5px; right: -3px; color: rgb(6, 175, 78);">
-                                            </span>وب
-                                            سایت
-                                            دانشگاه صنعتي شريف-اتوماسيون تغذيه  : http://www.dining.sharif.edu
-                                        </p>
+                                        <p>هایپر مارکت مگامال</p>
                                         
 
                                     </div>
@@ -164,7 +190,7 @@
 
                     </div>
 
-                            <form action="https://ikc.shaparak.ir/PPayment/Payment/index" id="CardInfo" autocomplete="false">
+                            <form id="CardInfo" autocomplete="false">
                                 <div class="col-sm-6 col-sm-pull-6 m-b-xs-20 ">
                                     <div class="pay-main-col">
                                         <div class="row">
@@ -330,7 +356,7 @@
                                                 </button>
                                             </div>
                                             <div class="col-xs-6">
-                                                <a tabindex="13" class="btn btn-danger btn-block  pull-left btn-c" id="cancel" role="button" style="padding: 3px 12px;">
+                                                <a tabindex="13" class="btn btn-danger btn-block  pull-left btn-c" id="#" role="button" style="padding: 3px 12px;">
                                                     <span class="glyphicon glyphicon-remove btn-c-3" aria-hidden="true"></span>
                                                     انصراف
                                                 </a>

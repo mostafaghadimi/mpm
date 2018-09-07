@@ -117,8 +117,13 @@ $("#no").click(function () {
 });
 
 $("#yes").click(function () {
-    $('#RModalCancel').modal('toggle');
-    canceling();
+    $.post("./done",function({
+        cart : cart,
+        userID : userID,
+        tokenDiscount : tokenDiscount
+    },status){
+        alert(status);
+    });
 });
 
 function canceling() {

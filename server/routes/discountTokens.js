@@ -24,7 +24,6 @@ router.post('/generate', (req, res, next) => {
         var tokenData = {
             userId: userId,
             token: crypto.randomBytes(8).toString('hex'),
-
         };
 
         DiscountToken.create(tokenData, function (error, token) {

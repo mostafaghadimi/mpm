@@ -31,6 +31,15 @@ router.post('/validation', (req, res) => {
 
 });
 
+router.get('/payment/ipg', (req, res) => {
+    var finalPrice = req.body.finalPrice;
+    var cart = req.body.cart;
+    var userID = req.body.userID;
+    var tokenDiscount = req.body.tokenDiscount;
+    var date = req.body.date;
+    res.render('ipg', {finalPrice : finalPrice,cart : cart,userID : userID,tokenDiscount,tokenDiscount, date : date});
+});
+
 router.post('/payment/wallet', (req, res) => {
     var finalPrice = req.body.finalPrice;
     var userID = req.body.userID;
@@ -57,6 +66,11 @@ router.post('/payment/wallet', (req, res) => {
                         message: 'خطا در به‌روز رسانی موجودی'
                     })
                 }
+                return res.send({
+                    success : true,
+                    message : "پرداخت با موفقیت",
+                    info : user
+                })
             })
         }
 
@@ -64,8 +78,10 @@ router.post('/payment/wallet', (req, res) => {
 
 });
 
-router.post('/done', (req, res) => {
+router.post('/payment/done', (req, res) => {
     // TODO: push notification
+    var date = req.body.date;
+    console.log('server : done');
     for (var i = 0; i < req.body.cart.length; i++) {
         var count = req.body.cart[i].count;
         Product.findOne({
@@ -92,6 +108,7 @@ router.post('/done', (req, res) => {
     var newTransaction = {
         owner: req.body.userID,
         cart: req.body.cart,
+        date : date,
         tokenDiscount: number(req.body.tokenDiscount)
     }
 
@@ -115,5 +132,23 @@ router.post('/done', (req, res) => {
     });
 
 });
+
+router.post('/history',(req,res) => {
+    var userID = req.body.userID;
+    Transaction.find({owner : userID},(err,transactions) => {
+        if(err){
+            return res.send({
+                success :false,
+                message : "مشکل در ارتباط"
+            })
+        }
+        transactions = transactions.sort({"createdAt": -1});
+        return res.send({
+            success : true,
+            message : "پیدا شد",
+            info : transactions
+        })
+    });
+})
 
 module.exports = router;
