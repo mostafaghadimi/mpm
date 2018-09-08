@@ -143,12 +143,15 @@ router.post('/history', (req, res) => {
         }
         transactions = transactions.sort({
             "createdAt": -1
-        });
-        return res.send({
+       });
+
+        var respond = {
             success: true,
             message: "پیدا شد",
             info: transactions
-        })
+        }
+        console.log(respond);
+        return res.json(respond);
     });
 })
 

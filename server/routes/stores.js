@@ -13,11 +13,13 @@ router.post('/',(req,res) => {
                 message: "خطا رد ارتباط"
             })
         }
-        return res.send({
+        //console.log(JSON.stringify(stores))
+        var respond = {
             success: true,
             message: "موفقیت",
             info: stores
-        })
+        }
+        return res.json(respond);
     });
 });
 
