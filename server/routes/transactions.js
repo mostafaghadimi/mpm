@@ -144,6 +144,7 @@ router.post('/history', (req, res) => {
         transactions = transactions.sort({
             "createdAt": -1
        });
+       
 
         var respond = {
             success: true,

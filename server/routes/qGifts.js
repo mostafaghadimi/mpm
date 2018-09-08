@@ -45,17 +45,13 @@ router.post('/validate', (req, res) => {
                         message : "خطای ذخیره سازی"
                     })
                 }
-                return res.send({
-                    success : true,
-                    message : "کیف پول شما "+qGift.credit+" تومان شارژ شد.",
-                    info : qGift.credit
-                })
+                
             });
         })
         return res.send({
-            success: true,
-            message: "کیو گیفت معتبر",
-            info: qGift.credit
+            success : true,
+            message : "کیف پول شما "+qGift.credit+" تومان شارژ شد.",
+            info : qGift.credit
         })
 
     });
