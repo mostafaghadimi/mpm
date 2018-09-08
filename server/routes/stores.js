@@ -3,7 +3,7 @@ var router = express.Router();
 
 var Store = require('./../model/store');
 
-router.get('/',(req,res) => {
+router.post('/',(req,res) => {
     Store.find((err,stores) => {
         if(err || !stores){
             return res.send({

@@ -50,11 +50,13 @@ router.post('/payment/ipg', (req, res) => {
 router.post('/payment/wallet', (req, res) => {
     var finalPrice = req.body.finalPrice;
     var userID = req.body.userID;
+    var cart = req.body.cart;
+    console.log(cart);
     User.findOne({
         _id: userID
     }, (err, user) => {
         if (err || !user) {
-            res.send({
+            return res.send({
                 success: false,
                 message: 'کاربر نامعتبر است'
             })
@@ -65,78 +67,67 @@ router.post('/payment/wallet', (req, res) => {
                     message: "موجودی کمتر از مبلغ است"
                 })
             }
-            user.credit -= finalPrice;
-            user.save((err) => {
-                if (err) {
-                    return res.send({
-                        success: false,
-                        message: 'خطا در به‌روز رسانی موجودی'
-                    })
-                }
-                return res.send({
-                    success: true,
-                    message: "پرداخت با موفقیت",
-                    info: user
+            var isValid = true;
+
+            for (var i = 0; i < cart.length; i++) {
+                var count = cart[i].count;
+                Product.findOne({_id: cart[i]._id},(err, product) => {
+                    if (err || !product) {
+                        isValid = false;
+                    }
+                    
+                    // product.count -= count;
+                    // product.save((err) => {
+                    //     if (err) {
+                    //         return res.send({
+                    //             success: false,
+                    //             message: "خطا در ذخیره‌سازی"
+                    //         });
+                    //     }
+                    // })
                 })
-            })
-        }
-
-    })
-
-});
-
-router.post('/payment/done', (req, res) => {
-    // TODO: push notification
-    console.log(req.body);
-    var cart = req.body.cart;
-    console.log('sdls');
-    console.log(cart);
-    for (var i = 0; i < cart.length; i++) {
-        var count = cart[i].count;
-        Product.findOne({
-            _id: cart[i]._id
-        }).exec((err, result) => {
-            if (err || !result) {
+            }
+            if (!isValid){
                 return res.send({
                     success: false,
-                    message: ' کالا نامعتبر است'
+                    message: " سبد خرید نامعتبر است"
                 });
             }
-            result.count -= count;
-            result.save((err) => {
+            var newTransaction = {
+                owner: req.body.userID,
+                cart: cart,
+                date: req.body.date,
+                price : finalPrice
+            }
+            console.log(newTransaction);
+        
+            Transaction.create(newTransaction, (err, transaction) => {
                 if (err) {
                     return res.send({
+                        message: 'خطا: تراکنش ثبت نشد',
                         success: false,
-                        message: "خطا در ذخیره‌سازی"
                     });
                 }
-            })
-        })
-    }
-    var newTransaction = {
-        owner: req.body.userID,
-        cart: cart,
-        date: req.body.date,
-        tokenDiscount: Number(req.body.tokenDiscount)
-    }
-    console.log(newTransaction);
-
-    Transaction.create(newTransaction, (err, result) => {
-        if (err) {
-            console.log('errrrr : ', err);
-            return res.send({
-                message: 'خطا: تراکنش ثبت نشد',
-                success: false,
+                user.credit -= finalPrice;
+                user.save((err) => {
+                    if (err) {
+                        return res.send({
+                            success: false,
+                            message: 'خطا در به‌روز رسانی موجودی'
+                        })
+                    }
+                    return res.send({
+                        message: 'تراکنش با موفقیت ثبت شد',
+                        success: true,
+                        info : transaction._id
+                    });
+                })
+        
             });
         }
-        return res.send({
-            message: 'تراکنش با موفقیت ثبت شد',
-            success: true
-        });
-
-    });
-
+    })
 });
+
 
 router.post('/history', (req, res) => {
     var userID = req.body.userID;

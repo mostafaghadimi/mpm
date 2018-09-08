@@ -44,17 +44,16 @@ var transaction = require('./routes/transactions');
 app.use('/transactions', transaction);
 
 var discountToken = require('./routes/discountTokens');
-app.use('/discount', discountToken);
+app.use('/discounts', discountToken);
 
 var store = require('./routes/stores');
 app.use('/stores',store);
 
+var qGift = require('./routes/qGifts');
+app.use('/qgifts',qGift);
+
 app.use('/public', express.static(path.join(__dirname, '../public')));
 app.use('/pay', express.static(path.join(__dirname, '../public/html/pay/')))
 
-
-app.set('views',path.join(__dirname, '../public/html/'));
-app.engine('html', require('ejs').renderFile);
-app.set('view engine', 'html');
 
 app.listen(8080, console.log('server connected: 8080'))

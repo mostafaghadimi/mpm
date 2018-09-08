@@ -18,9 +18,9 @@ var transactionSchema = new Schema ({
     date : {
         type : String
     },
-    tokenDiscount: {
-        type: Number,
-        default: 0
+    price : {
+        type : Number,
+        required : true
     }
 })
 

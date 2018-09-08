@@ -8,27 +8,30 @@ var DiscountToken = require('./../model/discountToken');
 router.post('/generate', (req, res, next) => {
     var discount = req.body.discount;
     var userId = req.body.userID;
-    var discount = req.body.discount;
+    var token = req.body.token;
 
     User.findOne({
         _id: userId
     }, function (err, user) {
-        if (err) {
-            return next(err);
-        }
-        if (!user) {
-            var err = Error('User not found');
-            err.status = 400;
-            return next(err);
+        if (err || !user) {
+            console.log(err);
+            return res.send({
+                success : false,
+                message : "کاربر نامعتبر"
+            });
         }
         var tokenData = {
             userId: userId,
-            token: crypto.randomBytes(8).toString('hex'),
+            token: token,
+            discount : discount
         };
 
         DiscountToken.create(tokenData, function (error, token) {
             if(error){
-                return res.status(500).send({ msg: err.message });
+                return res.send({
+                    success : false,
+                    message : "خطای ذخبره سازی"
+                });
             }
             return res.json(token);
         });
