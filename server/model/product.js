@@ -32,7 +32,7 @@ var productSchema = new Schema({
     groceryStore: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
-        ref:'Store'
+        ref: 'Store'
     },
     productImage: {
         type: String,

@@ -27,10 +27,16 @@ router.post('/generate', (req, res, next) => {
         };
 
         DiscountToken.create(tokenData, function (error, token) {
+
             if(error){
                 return res.send({
                     success : false,
                     message : "خطای ذخبره سازی"
+                })
+            }
+            if (error) {
+                return res.status(500).send({
+                    msg: err.message
                 });
             }
             return res.json(token);
@@ -38,20 +44,22 @@ router.post('/generate', (req, res, next) => {
     });
 });
 
-router.post('/validateToken/',(req,res) => {
+router.post('/validateToken/', (req, res) => {
     var token = req.body.token;
     var userId = req.body.userID;
-    DiscountToken.findOne({token : token} , function(err, token){
-        if(err || !token || token.userId != userId){
+    DiscountToken.findOne({
+        token: token
+    }, function (err, token) {
+        if (err || !token || token.userId != userId) {
             return res.send({
-                success : false,
-                message : "کدتخفیف نامعتبر",
+                success: false,
+                message: "کدتخفیف نامعتبر",
             });
         }
         return res.send({
-            success : true,
-            message : "کدتخفیف معتبر",
-            info : token.discount
+            success: true,
+            message: "کدتخفیف معتبر",
+            info: token.discount
         })
     });
 });

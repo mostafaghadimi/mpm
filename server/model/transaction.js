@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var transactionSchema = new Schema ({
+var transactionSchema = new Schema({
     owner: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
@@ -14,9 +14,9 @@ var transactionSchema = new Schema ({
     createdAt: {
         type: Date,
         default: Date.now()
-    }, 
-    date : {
-        type : String
+    },
+    date: {
+        type: String
     },
     price : {
         type : Number,

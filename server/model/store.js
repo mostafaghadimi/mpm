@@ -20,11 +20,11 @@ var storeSchema = new Schema({
         type: String,
         required: true
     },
-    address : {
-        type : String,
+    address: {
+        type: String,
     },
-    picture : {
-        type : String
+    picture: {
+        type: String
     }
 })
 

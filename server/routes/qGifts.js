@@ -17,16 +17,19 @@ router.post('/generate',(req,res) => {
     });
 });
 
-router.post('/validate',(req,res) => {
+router.post('/validate', (req, res) => {
     var qGId = req.body.qGID;
+
     var userID = req.body.userID;
-    QGift.findByIdAndRemove(qGId, (err,qGift) => {
-        if(err || !qGift){
+
+    QGift.findByIdAndRemove(qGId, (err, qGift) => {
+        if (err || !qGift) {
             return res.send({
-                success : false,
-                message : "کیو گیفت نامعتبر"
+                success: false,
+                message: "کیو گیفت نامعتبر"
             });
         }
+
         User.findById(userID,(err,user) => {
             if(err || !user){
                 return res.send({
@@ -49,6 +52,12 @@ router.post('/validate',(req,res) => {
                 })
             });
         })
+        return res.send({
+            success: true,
+            message: "کیو گیفت معتبر",
+            info: qGift.credit
+        })
+
     });
 });
 
